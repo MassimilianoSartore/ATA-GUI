@@ -1,15 +1,27 @@
 name: telegram message
-on: [push]
+on:
+  release:
+    types: [published]
+    
 jobs:
 
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    
+      # Get the release notes. Set a convenient 'id' for accessing later
+
+    - uses: yashanand1910/standard-release-notes@v1.2.1
+      id: get_release_notes
+      with:
+        changelog_path: ./CHANGELOG.md # Optional
+        version: ${{ github.ref }} # Required
+    
     - uses: actions/checkout@master
     - name: send custom message with args
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        args: The ${{ github.event_name }} event triggered first step.
+        args: "Changelog: /n${{ steps.get_release_notes.outputs.release_notes }}"
