@@ -1,7 +1,6 @@
 name: telegram message
-on:
-  release:
-    types: [published]
+on: 
+  workflow_dispatch:
     
 jobs:
 
