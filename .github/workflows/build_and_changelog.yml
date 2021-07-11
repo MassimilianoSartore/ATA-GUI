@@ -1,9 +1,6 @@
-name: .NET Core Desktop Build
-
-on:
-  push:
-    tags:
-      - '*'
+name: Build and changelog
+on: 
+  workflow_dispatch:
 
 jobs:
 
