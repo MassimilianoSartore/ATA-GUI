@@ -1,4 +1,5 @@
 # ATA-GUI
+[![.NET Core Desktop Build](https://github.com/msartore/ATA-GUI/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/msartore/ATA-GUI/actions/workflows/dotnet-desktop.yml)
 
 <img src="Resources/ATA_logo.png">
 
