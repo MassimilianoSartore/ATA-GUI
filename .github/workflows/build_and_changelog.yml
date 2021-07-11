@@ -37,7 +37,6 @@ jobs:
       id: format_changelog
       uses: kaskar2008/action-release-to-telegram@v0.0.6
       with:
-        template: .github/tg-message.mustache
         service-name: ATA Updates
         tag: ${{steps.tag.outputs.tag}}
         changelog: ${{ steps.github_release.outputs.changelog }}
