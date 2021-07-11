@@ -13,7 +13,7 @@ jobs:
       id: package
       uses: juliangruber/read-file-action@v1
       with:
-        path: CHANGELOG.md
+        path: D:/a/ATA-GUI/CHANGELOG.md
     
     - name: Get Previous tag
       id: previoustag
