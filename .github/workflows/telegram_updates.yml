@@ -9,9 +9,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    
-      # Get the release notes. Set a convenient 'id' for accessing later
-
     - uses: yashanand1910/standard-release-notes@v1.2.1
       id: get_release_notes
       with:
