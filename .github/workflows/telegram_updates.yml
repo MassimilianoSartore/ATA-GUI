@@ -9,10 +9,11 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: yashanand1910/standard-release-notes@v1.2.1
-      id: get_release_notes
+    - name: Read package.json
+      id: package
+      uses: juliangruber/read-file-action@v1
       with:
-        version: ${{ github.ref }} # Required
+        path: ./CHANGELOG.md
     
     - name: Get Previous tag
       id: previoustag
@@ -24,4 +25,4 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        args: "Download: \nhttps://github.com/msartore/ATA-GUI/releases/latest/download/ATA-GUI_${steps.previoustag.outputs.tag}.zip \nChangelog: /n${{ steps.get_release_notes.outputs.release_notes }}"
+        args: "Download: \nhttps://github.com/msartore/ATA-GUI/releases/latest/download/ATA-GUI_${steps.previoustag.outputs.tag}.zip \nChangelog: /n${{ steps.package.outputs.content }}"
