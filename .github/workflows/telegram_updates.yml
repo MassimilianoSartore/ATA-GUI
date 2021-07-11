@@ -9,20 +9,30 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Read changelog
-      id: package
-      uses: juliangruber/read-file-action@v1
-      with:
-        path: D:/a/ATA-GUI/CHANGELOG.md
     
     - name: Get Previous tag
       id: previoustag
       uses: "WyriHaximus/github-action-get-previous-tag@v1"
 
-    - uses: actions/checkout@master
-    - name: send custom message with args
+    - name: Build Changelog
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Format changelog for the message
+      id: format_changelog
+      uses: kaskar2008/action-release-to-telegram@v0.0.6
+      with:
+        template: .github/tg-message.mustache
+        service-name: ATA Updates
+        tag: ${{ steps.previoustag.outputs.tag }}
+        changelog: ${{ steps.github_release.outputs.changelog }}
+
+    - name: Send technical release message to Telegram
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        args: "Download: \nhttps://github.com/msartore/ATA-GUI/releases/latest/download/ATA-GUI_${steps.previoustag.outputs.tag}.zip \nChangelog: /n${{ steps.package.outputs.content }}"
+        args: ${{ steps.format_changelog.outputs.message }}
+        format: 'markdown'
