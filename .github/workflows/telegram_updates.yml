@@ -10,10 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - name: Get Previous tag
-      id: previoustag
-      uses: "WyriHaximus/github-action-get-previous-tag@v1"
-
     - name: Build Changelog
       id: github_release
       uses: mikepenz/release-changelog-builder-action@v1
@@ -26,7 +22,7 @@ jobs:
       with:
         template: .github/tg-message.mustache
         service-name: ATA Updates
-        tag: ${{ steps.previoustag.outputs.tag }}
+        tag: NEW_TAG
         changelog: ${{ steps.github_release.outputs.changelog }}
 
     - name: Send technical release message to Telegram
