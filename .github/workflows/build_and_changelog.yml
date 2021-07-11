@@ -33,14 +33,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Format changelog for the message
-      id: format_changelog
-      uses: kaskar2008/action-release-to-telegram@v0.0.6
-      with:
-        service-name: ATA Updates
-        tag: ${{steps.tag.outputs.tag}}
-        changelog: ${{ steps.github_release.outputs.changelog }}
-
     - name: Send technical release message to Telegram
       uses: appleboy/telegram-action@master
       with:
