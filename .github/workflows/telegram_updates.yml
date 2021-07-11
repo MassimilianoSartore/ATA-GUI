@@ -9,11 +9,11 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Read package.json
+    - name: Read changelog
       id: package
       uses: juliangruber/read-file-action@v1
       with:
-        path: ./CHANGELOG.md
+        path: CHANGELOG.md
     
     - name: Get Previous tag
       id: previoustag
