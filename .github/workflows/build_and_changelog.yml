@@ -23,17 +23,13 @@ jobs:
         tag_prefix: v
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Get tag
-      id: tag
-      uses: dawidd6/action-get-tag@v1
-    
+        
     - name: Build Changelog
       id: github_release
       uses: mikepenz/release-changelog-builder-action@v1
       with:
         fromTag: ${{ steps.previoustag.outputs.tag }}
-        toTag: ${{ steps.tag.outputs.tag }}
+        toTag: ${{ steps.release.outputs.tag_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
