@@ -6,6 +6,56 @@ on:
       - '*'
 
 jobs:
+
+  message:
+    name: Changelog and message
+    runs-on: ubuntu-latest
+    steps:
+    
+    - uses: actions/checkout@v2.2.0
+      with:
+        fetch-depth: 0
+    - name: 'Get Previous tag'
+      id: previoustag
+      uses: "WyriHaximus/github-action-get-previous-tag@v1"
+    
+    - id: release
+      uses: rymndhng/release-on-push-action@master
+      with:
+        bump_version_scheme: minor
+        tag_prefix: v
+    
+    - name: Get tag
+      id: tag
+      uses: dawidd6/action-get-tag@v1
+    
+    - name: Build Changelog
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v1
+      with:
+        fromTag: ${{ steps.previoustag.outputs.tag }}
+        toTag: ${{ steps.tag.outputs.tag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Format changelog for the message
+      id: format_changelog
+      uses: kaskar2008/action-release-to-telegram@v0.0.6
+      with:
+        template: .github/tg-message.mustache
+        service-name: ATA Updates
+        tag: ${{steps.tag.outputs.tag}}
+        changelog: ${{ steps.github_release.outputs.changelog }}
+
+    - name: Send technical release message to Telegram
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        args: ${{ steps.format_changelog.outputs.message }}
+        format: 'markdown'
+
+
   build:
     environment: NuGet
 
@@ -19,6 +69,7 @@ jobs:
       Solution_Name: ATA-GUI.sln
       
     steps:
+        
     - name: Checkout
       uses: actions/checkout@v2
       with:
