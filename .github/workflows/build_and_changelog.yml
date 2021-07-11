@@ -21,6 +21,8 @@ jobs:
       with:
         bump_version_scheme: minor
         tag_prefix: v
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Get tag
       id: tag
